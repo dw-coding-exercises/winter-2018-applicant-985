@@ -6,11 +6,16 @@
   [m f & args]
   (reduce (fn [r [k v]] (assoc r k (apply f v args))) {} m))
 
+(defn sanitize-param
+  [s]
+  (clojure.string/lower-case
+    (clojure.string/replace s " " "_")))
+
 (defn search-params
   "Select only the valid search params.
   For this exercise, it'll be city and state from the form."
   [m]
-  (update-vals (select-keys m [:city :state]) clojure.string/lower-case))
+  (update-vals (select-keys m [:city :state]) sanitize-param))
 
 (defmulti ocd-ids (fn [m] (set (keys m))))
 
@@ -44,7 +49,7 @@
   "Makes an HTTP request to the Turbovote API to get upcoming election data
   base on the ocd-ids from `build-ocd-ids`."
   [{:keys [params] :as request}]
-  (str (turbovote-url (build-ocd-ids (search-params params)))))
+  (str (http/get (turbovote-url (build-ocd-ids (search-params params))))))
 
 (defn upcoming-elections
   "Creates the view for upcoming elections."
