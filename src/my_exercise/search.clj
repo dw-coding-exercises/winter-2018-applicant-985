@@ -58,7 +58,8 @@
 (defn upcoming-elections
   "Creates the view for upcoming elections."
   [request]
-  [:div (fetch-upcoming-elections request)])
+  (let [election-data (fetch-upcoming-elections request)]
+    [:div election-data]))
 
 (defn page
   "Create the search page view from the request"
