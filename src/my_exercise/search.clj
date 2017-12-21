@@ -2,12 +2,15 @@
   (:require [hiccup.page :refer [html5]]
             [clj-http.client :as http]))
 
+(defn update-vals
+  [m f & args]
+  (reduce (fn [r [k v]] (assoc r k (apply f v args))) {} m))
 
 (defn search-params
   "Select only the valid search params.
   For this exercise, it'll be city and state from the form."
   [m]
-  (select-keys m [:city :state]))
+  (update-vals (select-keys m [:city :state]) clojure.string/lower-case))
 
 (defmulti ocd-ids (fn [m] (set (keys m))))
 
@@ -35,13 +38,13 @@
 
 (defn turbovote-url
   [ocd-ids]
-  (apply str (apply conj ["http://api.turbovote.org/elections/upcoming?district-divisions="] (interpose "," ocd-ids))))
+  (apply str (apply conj ["https://api.turbovote.org/elections/upcoming?district-divisions="] (interpose "," ocd-ids))))
 
 (defn fetch-upcoming-elections
   "Makes an HTTP request to the Turbovote API to get upcoming election data
   base on the ocd-ids from `build-ocd-ids`."
   [{:keys [params] :as request}]
-  (str (build-ocd-ids (search-params params))))
+  (str (turbovote-url (build-ocd-ids (search-params params)))))
 
 (defn upcoming-elections
   "Creates the view for upcoming elections."
