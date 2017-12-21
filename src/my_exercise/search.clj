@@ -1,5 +1,6 @@
 (ns my-exercise.search
-  (:require [hiccup.page :refer [html5]]))
+  (:require [hiccup.page :refer [html5]]
+            [clj-http.client :as http]))
 
 
 (defn search-params
@@ -24,17 +25,26 @@
 (defmethod ocd-ids :default [params] ["ocd-division/country:us"])
 
 (defn build-ocd-ids
+  "Builds a vector of 1 or more ocd-ids to query the
+  Turbovote API. Used with `fetch-upcoming-elections`."
   [params]
   (->> params
        search-params
        (into {} (filter (comp some? seq val)))
        ocd-ids))
 
+(defn turbovote-url
+  [ocd-ids]
+  (apply str (apply conj ["http://api.turbovote.org/elections/upcoming?district-divisions="] (interpose "," ocd-ids))))
+
 (defn fetch-upcoming-elections
+  "Makes an HTTP request to the Turbovote API to get upcoming election data
+  base on the ocd-ids from `build-ocd-ids`."
   [{:keys [params] :as request}]
   (str (build-ocd-ids (search-params params))))
 
 (defn upcoming-elections
+  "Creates the view for upcoming elections."
   [request]
   [:div (fetch-upcoming-elections request)])
 
