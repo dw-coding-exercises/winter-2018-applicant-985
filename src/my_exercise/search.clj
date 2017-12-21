@@ -1,10 +1,15 @@
 (ns my-exercise.search
   (:require [hiccup.page :refer [html5]]))
 
-;; Views
+(defn search-params
+  "Select only the valid search params.
+  For this exercise, it'll be city and state from the form."
+  [m]
+  (select-keys m [:city :state]))
+
 (defn fetch-upcoming-elections
   [{:keys [params] :as request}]
-  (str params))
+  (str (search-params params)))
 
 (defn upcoming-elections
   [request]
