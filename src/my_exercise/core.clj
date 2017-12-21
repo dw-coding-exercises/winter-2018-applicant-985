@@ -14,5 +14,5 @@
 
 (def handler
   (-> app
-      (wrap-defaults site-defaults)
+      (wrap-defaults (assoc-in site-defaults [:security :anti-forgery] false))
       wrap-reload))
