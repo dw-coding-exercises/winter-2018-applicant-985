@@ -42,6 +42,10 @@
        ocd-ids))
 
 (defn turbovote-url
+  "Builds a turbovote url to make a request for election data
+  based off of a collection of OCD-IDs.
+
+  Lacks validation so be careful."
   [ocd-ids]
   (apply str (apply conj ["https://api.turbovote.org/elections/upcoming?district-divisions="] (interpose "," ocd-ids))))
 
