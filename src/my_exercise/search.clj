@@ -136,3 +136,54 @@
   (html5
     (upcoming-elections request)))
 
+(comment
+
+  Brownie points time!
+
+  Some of this code is good, I think.
+  Some of it is really bad... :()
+  That's okay though because the bad code isn't unfixable!
+
+  If I was looking at this for the first time, my biggest gripe would
+  be that there is a lot going on in this ns.
+
+  I think my first step would be to a file structure like,
+  src/my_exercise/home.clj
+  src/my_exercise/home/view.clj
+  src/my_exercise/search.clj
+  src/my_exercise/search/view.clj
+
+  My second biggest gripe is the lack of specs.
+  I really enjoy the flexibility of multimethods and leveraging spec
+  for things like the `ocd-id` multimethod.
+  Given the flexible nature of the data coming back from Turbovote,
+  I think the views would appreciate some multimethods like I described
+  above the `voting-methods` function.
+
+  My third move would be to get organized with the building of the
+  Turbovote URL. Right now it's pretty choppy which I'm not big on.
+  A little TLC and some smarter threading macro action and you've got
+  a very nice little data pipeline for easier testing and simpler code.
+
+  My last and final move would be toward serious validation/execution scheme
+  for the code a la http://cjohansen.no/referentially-transparent-crud/
+
+  At the end of the day it looks like exactly what it is, I think, which is
+  nervous code written under a time crunch. Which is cool, because I think
+  my best projects have all started there at some point trying to get a
+  quick and dirty POC done to impress some peeps! Just as long as those bad
+  practices are cleaned up in small bits, you'll wind up in a good spot.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
