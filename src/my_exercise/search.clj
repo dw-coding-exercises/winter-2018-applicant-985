@@ -65,6 +65,9 @@
   (read-string (:body (http/get (turbovote-url (build-ocd-ids (search-params params)))))))
 
 ;; Views
+;; Ideally, stuff like voting-methods and voting-registration would be spec'd
+;; and I would have a multimethod built off of those specs to make the code look
+;; much less ugly and work more flexibly, but it be what it be!
 (defn voting-methods
   "Builds the section for voting methods"
   [{:keys [district-divisions] :as election}]
