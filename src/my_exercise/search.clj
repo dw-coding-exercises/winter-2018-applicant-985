@@ -17,7 +17,7 @@
   (reduce (fn [r [k v]] (assoc r k (apply f v args))) {} m))
 
 (defn sanitize-param
-  "Replaces spaces with dashes '-' and
+  "Replaces spaces with underscores '_' and
   converts all letters to lowercase."
   [s]
   (clojure.string/lower-case
