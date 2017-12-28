@@ -4,10 +4,21 @@
 
 ;; Utils
 (defn update-vals
+  "The flavor of `map-vals` that I decided to go with.
+
+  ;;
+
+  `(update-vals {:a 1 :b 2} inc) => {:a 2 :b 3}`
+
+  ;;
+
+  Casts everything to a `clojure.lang.PersistentMap` so be careful"
   [m f & args]
   (reduce (fn [r [k v]] (assoc r k (apply f v args))) {} m))
 
 (defn sanitize-param
+  "Replaces spaces with dashes '-' and
+  converts all letters to lowercase."
   [s]
   (clojure.string/lower-case
     (clojure.string/replace s " " "_")))
@@ -27,11 +38,20 @@
   (apply str (apply conj ["https://api.turbovote.org/elections/upcoming?district-divisions="] (interpose "," ocd-ids))))
 
 ;; OCD IDs
+
+;; String formats to be used by the `ocd-ids` multimethod
 (def place-id "ocd-division/country:us/state:%s/place:%s")
 (def state-id "ocd-division/country:us/state:%s")
 (def national-id "ocd-division/country:us")
 
-(defmulti ocd-ids (fn [m] (set (keys m))))
+
+(defmulti ocd-ids
+  "Creates a vector of `ocd-id`s based on
+  the parameters available in the input map `m`.
+
+  Defaults to the national `ocd-id` only."
+  (fn [m] (set (keys m))))
+
 (defmethod ocd-ids :default [params] ["ocd-division/country:us"])
 
 (defmethod ocd-ids #{:city :state}
@@ -44,10 +64,6 @@
   [{:keys [state] :as params}]
   [(format state-id state)
    national-id])
-
-(defmethod ocd-ids :default
-  [_]
-  [national-id])
 
 (defn build-ocd-ids
   "Builds a vector of 1 or more ocd-ids to query the
