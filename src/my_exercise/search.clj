@@ -87,7 +87,7 @@
     (for [reg-methods-set reg-methods-list
           reg-method reg-methods-set]
       [:div "<br />"
-       [:div (str y)]])))
+       [:div (str reg-method)]])))
 
 (defn desc-div
   "Builds the divs for the election description
